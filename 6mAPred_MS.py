@@ -342,7 +342,7 @@ def getmodel_Kn(shape1,in_dim,em_dim):
     lstm_layer = Bidirectional(LSTM(32,  return_sequences=True))
 
     k1_features = embedding_layer(inputs_k1)
-    #经过ms_cam 之后再 lstm
+
     k1_x = Conv1D(filters = 256, kernel_size = 1,activation = None,input_shape = k1_features.shape)(k1_features)
     k1_x = ConvN(6,k1_x)
     k1_x = Conv1D(filters = 64, kernel_size = 1,activation = None,input_shape = k1_x.shape)(k1_x)
@@ -367,7 +367,6 @@ def getmodel_Dn(shape1,shape2,in_dim,em_dim, in_dim2, em_dim2):
     k1_features = embedding_layer1(inputs_k1)
     k2_features = embedding_layer2(inputs_k2)
 
-    #经过ms_cam 之后再 lstm
     k1_x = Conv1D(filters = 256, kernel_size = 1,activation = None,input_shape = k1_features.shape)(k1_features)
     k1_x = ConvN(6,k1_x)
     k1_x = Conv1D(filters = 64, kernel_size = 2,activation = 'elu',input_shape = k1_x.shape)(k1_x)
@@ -393,7 +392,6 @@ def getmodel_Dn(shape1,shape2,in_dim,em_dim, in_dim2, em_dim2):
 def getmodel_NE(shape1):
     inputs_k1 = Input(shape=shape1)
     lstm_layer = Bidirectional(LSTM(32,  return_sequences=True))
-    #经过ms_cam 之后再 lstm
     k1_x = tf.expand_dims(inputs_k1,axis=-1)
     k1_x = Conv1D(filters = 256, kernel_size = 1,activation = None,input_shape = k1_x.shape)(k1_x)
     k1_x = ConvN(6,k1_x)
