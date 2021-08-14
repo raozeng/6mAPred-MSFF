@@ -22,58 +22,6 @@ from keras import losses
 import pickle
 import csv
 
-def collect_neg(pos_file,neg_res_file, output):
-    f = open(pos_file)
-    data = f.readlines()
-    pos_limit= {'GAGG':0,'AGG':0,'AG':0, 'NN':0}
-    neg_limit= {'GAGG':0,'AGG':0,'AG':0, 'NN':0}
-    neg_output=[]
-
-    for line in data:
-        if len(line) >= 41:
-            if line.find('GAGG') >=0:
-                pos_limit['GAGG'] = pos_limit['GAGG']+1
-            elif line.find('AGG') >=0:
-                pos_limit['AGG'] = pos_limit['AGG']+1
-            elif line.find('AG') >=0:
-                pos_limit['AG'] = pos_limit['AG']+1
-            else:
-                pos_limit['NN']=  pos_limit['NN'] + 1
-    
-    f2 = open(neg_res_file)
-    fdata2 = f2.readlines()
-    data2 = []
-    for line in fdata2:
-        if len(line) >= 41:
-            data2.append(line)
-    #打乱
-    index = [i for i in range(len(data2))]
-    random.shuffle(data2)
-    #data2 = data2[index]
-
-    for line in data2:
-        if line.find('GAGG') >=0 and neg_limit['GAGG'] < pos_limit['GAGG']:
-            neg_limit['GAGG'] = neg_limit['GAGG']+1
-            neg_output.append(line)
-        elif line.find('AGG') >=0 and neg_limit['AGG'] < pos_limit['AGG']:
-            neg_limit['AGG'] = neg_limit['AGG']+1
-            neg_output.append(line)
-        elif line.find('AG') >=0 and neg_limit['AG'] < pos_limit['AG']:
-            neg_limit['AG'] = neg_limit['AG']+1
-            neg_output.append(line)
-        elif neg_limit['NN'] < pos_limit['NN']:
-            neg_limit['NN'] =  neg_limit['NN'] + 1
-            neg_output.append(line)
-
-    o2 = open(output,'w')
-    seq = 1
-    for line in neg_output:
-        str_line = "-sample%s\n%s" %(seq,line)
-        o2.write(str_line)
-        seq = seq +1
-    print(pos_limit)
-    return
-
 def dataProcessing(path,label, calculate,f_type):
     X = []
     y = []
